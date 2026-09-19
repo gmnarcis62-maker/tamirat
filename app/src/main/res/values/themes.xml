@@ -1,0 +1,16 @@
+<resources>
+    <style name="Theme.Tamirkar" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <!--
+        تم صفحه‌ی اسپلش (Splash Screen) با استفاده از کتابخانه androidx.core.splashscreen
+        این تم روی همه‌ی نسخه‌های اندروید (حتی زیر ۱۲) به‌صورت یکسان کار می‌کند.
+    -->
+    <style name="Theme.Tamirkar.Splash" parent="Theme.SplashScreen">
+        <!-- رنگ پس‌زمینه‌ی اسپلش: قرمز برند ردلاین -->
+        <item name="windowSplashScreenBackground">#D32F2F</item>
+        <!-- آیکون مرکزی اسپلش (گوشی + نشان آچار) -->
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <!-- تمی که بعد از پایان اسپلش نمایش داده می‌شود -->
+        <item name="postSplashScreenTheme">@style/Theme.Tamirkar</item>
+    </style>
+</resources>
