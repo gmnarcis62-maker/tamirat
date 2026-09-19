@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package red.line.tamirkar.ui.screens
 
 import android.net.Uri

@@ -129,7 +129,7 @@ class MainActivity : ComponentActivity() {
         val factory = ViewModelFactory(repository, preferences)
 
         setContent {
-            val viewModel: MainViewModel by viewModel(factory = factory)
+            val viewModel: MainViewModel = viewModel(factory = factory)
             val themeMode by viewModel.themeMode.collectAsState()
             val autoSmsEnabled by viewModel.autoSmsEnabled.collectAsState()
             val shopProfile by viewModel.shopProfile.collectAsState()
