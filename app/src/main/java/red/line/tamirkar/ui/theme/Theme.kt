@@ -1,6 +1,5 @@
 package red.line.tamirkar.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -13,27 +12,69 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 private val LightColors = lightColorScheme(
-    primary = RedLinePrimary,
+    primary = Red40,
     onPrimary = Color.White,
-    secondary = RedLineSecondary,
-    background = RedLineBackground,
+    primaryContainer = Red95,
+    onPrimaryContainer = Red10,
+
+    secondary = Slate30,
+    onSecondary = Color.White,
+    secondaryContainer = Slate95,
+    onSecondaryContainer = Slate10,
+
+    tertiary = VipGoldDark,
+    onTertiary = Color.White,
+    tertiaryContainer = VipGoldContainer,
+    onTertiaryContainer = Color(0xFF3D2E00),
+
+    background = Neutral99,
+    onBackground = Neutral10,
     surface = Color.White,
-    tertiary = VipGold
+    onSurface = Neutral10,
+    surfaceVariant = Neutral95,
+    onSurfaceVariant = Slate30,
+
+    error = StatusCancelled,
+    onError = Color.White,
+
+    outline = Neutral90,
+    outlineVariant = Neutral95
 )
 
 private val DarkColors = darkColorScheme(
-    primary = RedLinePrimaryDark,
-    onPrimary = Color.White,
-    secondary = RedLineSecondary,
-    background = RedLineSurfaceDark,
-    surface = Color(0xFF1E1E1E),
-    tertiary = VipGold
+    primary = Red80,
+    onPrimary = Red10,
+    primaryContainer = Red30,
+    onPrimaryContainer = Red90,
+
+    secondary = Slate80,
+    onSecondary = Slate10,
+    secondaryContainer = Slate30,
+    onSecondaryContainer = Slate90,
+
+    tertiary = VipGold,
+    onTertiary = Color(0xFF3D2E00),
+    tertiaryContainer = Color(0xFF544400),
+    onTertiaryContainer = VipGoldContainer,
+
+    background = Neutral6,
+    onBackground = Neutral90,
+    surface = Neutral10,
+    onSurface = Neutral90,
+    surfaceVariant = Neutral20,
+    onSurfaceVariant = Slate90,
+
+    error = Color(0xFFFFB4A9),
+    onError = Color(0xFF680003),
+
+    outline = Neutral20,
+    outlineVariant = Neutral10
 )
 
 @Composable
 fun TamirkarTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = false, // با توجه به لوگوی برند، رنگ ثابت پیشنهاد می‌شود
+    dynamicColor: Boolean = false, // با توجه به هویت رنگی برند، رنگ ثابت پیشنهاد می‌شود
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -48,6 +89,7 @@ fun TamirkarTheme(
     MaterialTheme(
         colorScheme = colorScheme,
         typography = TamirkarTypography,
+        shapes = TamirkarShapes,
         content = content
     )
 }

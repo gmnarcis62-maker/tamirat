@@ -1,21 +1,38 @@
 package red.line.tamirkar.ui.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import red.line.tamirkar.data.RepairTicket
-import red.line.tamirkar.data.TicketStatus
+import red.line.tamirkar.ui.components.GradientHero
+import red.line.tamirkar.ui.theme.StatCardShape
+import red.line.tamirkar.util.PersianDateUtils
 
-data class DashboardStat(val title: String, val value: String, val icon: androidx.compose.ui.graphics.vector.ImageVector)
+private data class DashboardStat(
+    val title: String,
+    val value: String,
+    val icon: ImageVector,
+    val tint: Color
+)
+
+private data class QuickAction(
+    val label: String,
+    val icon: ImageVector,
+    val onClick: () -> Unit
+)
 
 @Composable
 fun DashboardScreen(
@@ -31,79 +48,147 @@ fun DashboardScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .verticalScrollWorkaround()
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text("داشبورد تعمیرگاه", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
-            if (!isVip) {
-                AssistChip(onClick = onUpgradeClick, label = { Text("ارتقا به VIP") })
-            } else {
-                AssistChip(onClick = {}, label = { Text("عضو VIP") }, leadingIcon = {
-                    Icon(Icons.Filled.Star, contentDescription = null)
-                })
-            }
-        }
-
-        Spacer(Modifier.height(16.dp))
-
-        val stats = listOf(
-            DashboardStat("فیش‌های فعال", red.line.tamirkar.util.PersianDateUtils.toPersianNumber(activeTicketCount), Icons.Filled.Build),
-            DashboardStat("درآمد امروز", red.line.tamirkar.util.PersianDateUtils.formatToman(todayIncome), Icons.Filled.Payments),
-            DashboardStat("موجودی کم", "${red.line.tamirkar.util.PersianDateUtils.toPersianNumber(lowStockCount)} قطعه", Icons.Filled.Warning),
-            DashboardStat("وضعیت اشتراک", if (isVip) "VIP" else "رایگان", Icons.Filled.WorkspacePremium)
+        GradientHero(
+            title = "سلام 👋",
+            subtitle = "خلاصه‌ی امروز تعمیرگاه شما",
+            trailing = { TrailingVipChip(isVip, onUpgradeClick) }
         )
 
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            modifier = Modifier.weight(1f)
-        ) {
-            items(stats) { stat ->
-                ElevatedCard(modifier = Modifier.fillMaxWidth()) {
-                    Column(Modifier.padding(16.dp)) {
-                        Icon(stat.icon, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
-                        Spacer(Modifier.height(8.dp))
-                        Text(stat.value, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-                        Text(stat.title, style = MaterialTheme.typography.bodyMedium)
-                    }
+        Column(modifier = Modifier.padding(16.dp)) {
+            val stats = listOf(
+                DashboardStat(
+                    "فیش‌های فعال", PersianDateUtils.toPersianNumber(activeTicketCount),
+                    Icons.Filled.Build, Color(0xFF1E88E5)
+                ),
+                DashboardStat(
+                    "درآمد امروز", PersianDateUtils.formatToman(todayIncome),
+                    Icons.Filled.Payments, Color(0xFF43A047)
+                ),
+                DashboardStat(
+                    "موجودی کم", "${PersianDateUtils.toPersianNumber(lowStockCount)} قطعه",
+                    Icons.Filled.Warning, Color(0xFFF9A825)
+                ),
+                DashboardStat(
+                    "وضعیت اشتراک", if (isVip) "VIP" else "رایگان",
+                    Icons.Filled.WorkspacePremium, Color(0xFFC79100)
+                )
+            )
+
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                modifier = Modifier.height(220.dp)
+            ) {
+                items(stats) { stat -> StatCard(stat) }
+            }
+
+            Spacer(Modifier.height(24.dp))
+            Text("دسترسی سریع", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            Spacer(Modifier.height(12.dp))
+
+            val actions = listOf(
+                QuickAction("پذیرش جدید", Icons.Filled.Add, onNewTicketClick),
+                QuickAction("عیب‌یابی", Icons.Filled.Search, onTroubleshootingClick),
+                QuickAction("حسابداری", Icons.Filled.AccountBalanceWallet, onAccountingClick)
+            )
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                actions.forEach { action ->
+                    QuickActionButton(action, modifier = Modifier.weight(1f))
                 }
             }
-        }
 
-        Button(
-            onClick = onNewTicketClick,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Icon(Icons.Filled.Add, contentDescription = null)
-            Spacer(Modifier.width(8.dp))
-            Text("ثبت پذیرش جدید")
-        }
-
-        Spacer(Modifier.height(8.dp))
-
-        OutlinedButton(
-            onClick = onTroubleshootingClick,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Icon(Icons.Filled.Search, contentDescription = null)
-            Spacer(Modifier.width(8.dp))
-            Text("پایگاه‌داده عیب‌یابی گوشی")
-        }
-
-        Spacer(Modifier.height(8.dp))
-
-        OutlinedButton(
-            onClick = onAccountingClick,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Icon(Icons.Filled.Payments, contentDescription = null)
-            Spacer(Modifier.width(8.dp))
-            Text("حسابداری و صندوق")
+            Spacer(Modifier.height(24.dp))
         }
     }
+}
+
+@Composable
+private fun TrailingVipChip(isVip: Boolean, onUpgradeClick: () -> Unit) {
+    Surface(
+        shape = RoundedCornerShape(50),
+        color = if (isVip) Color(0x33FFC107) else Color.White.copy(alpha = 0.15f),
+        onClick = onUpgradeClick
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                if (isVip) Icons.Filled.WorkspacePremium else Icons.Filled.LockOpen,
+                contentDescription = null,
+                tint = Color.White,
+                modifier = Modifier.size(16.dp)
+            )
+            Spacer(Modifier.width(6.dp))
+            Text(
+                if (isVip) "عضو VIP" else "ارتقا به VIP",
+                color = Color.White,
+                style = MaterialTheme.typography.labelLarge
+            )
+        }
+    }
+}
+
+@Composable
+private fun StatCard(stat: DashboardStat) {
+    Surface(
+        shape = StatCardShape,
+        color = MaterialTheme.colorScheme.surface,
+        tonalElevation = 1.dp,
+        shadowElevation = 2.dp,
+        modifier = Modifier.fillMaxWidth().fillMaxHeight()
+    ) {
+        Column(Modifier.padding(16.dp)) {
+            Box(
+                modifier = Modifier
+                    .size(40.dp)
+                    .background(stat.tint.copy(alpha = 0.15f), CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(stat.icon, contentDescription = null, tint = stat.tint, modifier = Modifier.size(20.dp))
+            }
+            Spacer(Modifier.height(10.dp))
+            Text(stat.value, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, maxLines = 1)
+            Text(stat.title, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
+    }
+}
+
+@Composable
+private fun QuickActionButton(action: QuickAction, modifier: Modifier = Modifier) {
+    Surface(
+        onClick = action.onClick,
+        shape = RoundedCornerShape(18.dp),
+        color = MaterialTheme.colorScheme.primaryContainer,
+        modifier = modifier.height(84.dp)
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize().padding(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Icon(action.icon, contentDescription = null, tint = MaterialTheme.colorScheme.onPrimaryContainer)
+            Spacer(Modifier.height(6.dp))
+            Text(
+                action.label,
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                maxLines = 1
+            )
+        }
+    }
+}
+
+// اسکرول ساده برای وقتی محتوا از صفحه بلندتر است (در صفحات کوچک)
+@Composable
+private fun Modifier.verticalScrollWorkaround(): Modifier {
+    val scrollState = androidx.compose.foundation.rememberScrollState()
+    return this.then(androidx.compose.foundation.verticalScroll(scrollState))
 }

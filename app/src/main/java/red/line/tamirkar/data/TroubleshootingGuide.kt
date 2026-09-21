@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 enum class TroubleshootingCategory(val label: String) {
+    POWER_ON_FAILURE("روشن نشدن / خاموشی کامل دستگاه"),
     DISPLAY("صفحه نمایش"),
     BATTERY_CHARGING("باتری و شارژ"),
     SOFTWARE("نرم‌افزار و سیستم‌عامل"),
@@ -23,6 +24,7 @@ data class TroubleshootingGuide(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val category: TroubleshootingCategory,
     val brand: String,           // "همه برندها" یا نام برند خاص مثل Samsung / Xiaomi / Apple
+    val model: String = "همه مدل‌ها", // مدل خاص مثل "iPhone 7" یا "Galaxy A52" — برای فیلتر دقیق‌تر
     val title: String,           // عنوان کوتاه ایراد
     val symptoms: String,        // علائم قابل مشاهده
     val possibleCauses: String,  // علت‌های احتمالی

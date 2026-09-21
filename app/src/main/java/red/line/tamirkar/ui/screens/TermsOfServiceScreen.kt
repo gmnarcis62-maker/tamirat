@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package red.line.tamirkar.ui.screens
 
 import androidx.compose.foundation.layout.*

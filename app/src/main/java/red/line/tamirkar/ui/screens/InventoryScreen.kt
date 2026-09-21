@@ -7,6 +7,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Inventory2
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -72,7 +73,13 @@ fun InventoryScreen(
                 }
             }
             if (parts.isEmpty()) {
-                item { Text("هنوز قطعه‌ای ثبت نشده است", style = MaterialTheme.typography.bodyMedium) }
+                item {
+                    red.line.tamirkar.ui.components.EmptyState(
+                        icon = Icons.Filled.Inventory2,
+                        title = "انبار خالی است",
+                        description = "با دکمه‌ی + اولین قطعه را اضافه کنید"
+                    )
+                }
             }
         }
     }
@@ -157,12 +164,31 @@ fun VipLockedContent(title: String, description: String, onUpgradeClick: () -> U
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Icon(Icons.Filled.Lock, contentDescription = null, modifier = Modifier.size(48.dp))
-        Spacer(Modifier.height(16.dp))
-        Text(title, style = MaterialTheme.typography.titleLarge)
+        Box(
+            modifier = Modifier
+                .size(96.dp)
+                .background(
+                    androidx.compose.ui.graphics.Brush.linearGradient(
+                        listOf(red.line.tamirkar.ui.theme.VipGold, red.line.tamirkar.ui.theme.VipGoldDark)
+                    ),
+                    androidx.compose.foundation.shape.CircleShape
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(Icons.Filled.Lock, contentDescription = null, modifier = Modifier.size(40.dp), tint = androidx.compose.ui.graphics.Color.White)
+        }
+        Spacer(Modifier.height(20.dp))
+        Text(title, style = MaterialTheme.typography.titleLarge, fontWeight = androidx.compose.ui.text.font.FontWeight.Bold)
         Spacer(Modifier.height(8.dp))
-        Text(description, style = MaterialTheme.typography.bodyMedium, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
-        Spacer(Modifier.height(16.dp))
-        Button(onClick = onUpgradeClick) { Text("مشاهده پلن VIP") }
+        Text(description, style = MaterialTheme.typography.bodyMedium, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Spacer(Modifier.height(20.dp))
+        Button(
+            onClick = onUpgradeClick,
+            colors = ButtonDefaults.buttonColors(containerColor = red.line.tamirkar.ui.theme.VipGoldDark)
+        ) {
+            Icon(Icons.Filled.WorkspacePremium, contentDescription = null, modifier = Modifier.size(18.dp))
+            Spacer(Modifier.width(6.dp))
+            Text("مشاهده پلن VIP")
+        }
     }
 }

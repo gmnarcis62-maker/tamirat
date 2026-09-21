@@ -10,12 +10,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -65,7 +64,7 @@ fun TamirkarNavGraph(
     val reminders by viewModel.reminders.collectAsState()
 
     // نگه‌داشتن فیشی که در حال ثبت امضا برای آن هستیم
-    var signatureTargetTicketId by remember { mutableStateOf<Long?>(null) }
+    var signatureTargetTicketId by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf<Long?>(null) }
 
     val snackbarHostState = remember { SnackbarHostState() }
     val isBusy by viewModel.isBusy.collectAsState()
@@ -81,7 +80,10 @@ fun TamirkarNavGraph(
         bottomBar = {
             // نوار پایین فقط در صفحات اصلی نمایش داده می‌شود
             if (Destination.bottomBarItems.any { it.route == currentRoute }) {
-                NavigationBar {
+                NavigationBar(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    tonalElevation = 3.dp
+                ) {
                     Destination.bottomBarItems.forEach { dest ->
                         NavigationBarItem(
                             selected = currentRoute == dest.route,
@@ -93,7 +95,14 @@ fun TamirkarNavGraph(
                                 }
                             },
                             icon = { Icon(dest.icon, contentDescription = dest.label) },
-                            label = { Text(dest.label) }
+                            label = { Text(dest.label, style = MaterialTheme.typography.labelSmall) },
+                            colors = NavigationBarItemDefaults.colors(
+                                selectedIconColor = MaterialTheme.colorScheme.primary,
+                                selectedTextColor = MaterialTheme.colorScheme.primary,
+                                indicatorColor = MaterialTheme.colorScheme.primaryContainer,
+                                unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
                         )
                     }
                 }
@@ -233,7 +242,7 @@ fun TamirkarNavGraph(
                     reminders = reminders,
                     onBack = { navController.popBackStack() },
                     onAdd = { title, note, dateTime ->
-                        viewModel.addReminder(title, note, dateTime, null) { reminder ->
+                        viewModel.addReminder(title, note, dateTime) { reminder ->
                             onScheduleReminder(reminder)
                         }
                     },

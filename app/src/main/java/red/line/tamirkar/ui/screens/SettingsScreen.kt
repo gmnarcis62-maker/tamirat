@@ -52,19 +52,54 @@ fun SettingsScreen(
     ) {
         Text("تنظیمات", style = MaterialTheme.typography.titleLarge)
 
+        if (red.line.tamirkar.AppConfig.TESTING_MODE_UNLOCK_ALL) {
+            Surface(
+                shape = androidx.compose.foundation.shape.RoundedCornerShape(14.dp),
+                color = MaterialTheme.colorScheme.secondaryContainer
+            ) {
+                Row(
+                    modifier = Modifier.padding(12.dp),
+                    verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
+                ) {
+                    Icon(Icons.Filled.Science, contentDescription = null, tint = MaterialTheme.colorScheme.onSecondaryContainer)
+                    Spacer(Modifier.width(8.dp))
+                    Text(
+                        "حالت آزمایشی فعال است — همه‌ی امکانات VIP برای تست باز هستند",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
+                }
+            }
+        }
+
         if (!isVip) {
-            ElevatedCard {
-                Column(Modifier.padding(16.dp)) {
+            Surface(
+                shape = androidx.compose.foundation.shape.RoundedCornerShape(20.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        androidx.compose.ui.graphics.Brush.linearGradient(
+                            listOf(red.line.tamirkar.ui.theme.VipGold, red.line.tamirkar.ui.theme.VipGoldDark)
+                        ),
+                        androidx.compose.foundation.shape.RoundedCornerShape(20.dp)
+                    ),
+                color = androidx.compose.ui.graphics.Color.Transparent
+            ) {
+                Column(Modifier.padding(18.dp)) {
                     Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
-                        Icon(Icons.Filled.WorkspacePremium, contentDescription = null)
+                        Icon(Icons.Filled.WorkspacePremium, contentDescription = null, tint = androidx.compose.ui.graphics.Color.White)
                         Spacer(Modifier.width(8.dp))
-                        Text("ارتقا به نسخه VIP", style = MaterialTheme.typography.titleMedium)
+                        Text("ارتقا به نسخه VIP", style = MaterialTheme.typography.titleMedium, color = androidx.compose.ui.graphics.Color.White, fontWeight = androidx.compose.ui.text.font.FontWeight.Bold)
                     }
                     Spacer(Modifier.height(8.dp))
-                    Text("فیش نامحدود، مدیریت انبار، حسابداری کامل، عیب‌یابی و حذف محدودیت‌ها")
-                    Spacer(Modifier.height(8.dp))
-                    Button(onClick = onUpgradeClick, modifier = Modifier.fillMaxWidth()) {
-                        Text("مشاهده پلن VIP")
+                    Text("فیش نامحدود، مدیریت انبار، حسابداری کامل، عیب‌یابی و حذف محدودیت‌ها", color = androidx.compose.ui.graphics.Color.White.copy(alpha = 0.9f))
+                    Spacer(Modifier.height(12.dp))
+                    Button(
+                        onClick = onUpgradeClick,
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(containerColor = androidx.compose.ui.graphics.Color.White, contentColor = red.line.tamirkar.ui.theme.VipGoldDark)
+                    ) {
+                        Text("مشاهده پلن VIP", fontWeight = androidx.compose.ui.text.font.FontWeight.Bold)
                     }
                 }
             }

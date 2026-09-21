@@ -15,6 +15,7 @@ interface TroubleshootingDao {
         WHERE title LIKE '%' || :query || '%'
            OR symptoms LIKE '%' || :query || '%'
            OR brand LIKE '%' || :query || '%'
+           OR model LIKE '%' || :query || '%'
         ORDER BY category ASC
     """)
     fun search(query: String): Flow<List<TroubleshootingGuide>>

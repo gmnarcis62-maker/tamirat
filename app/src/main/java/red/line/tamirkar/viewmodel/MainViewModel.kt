@@ -29,7 +29,9 @@ class MainViewModel(
 
     // وضعیت اشتراک VIP کاربر — پایدار با DataStore، به BillingManager هم وصل می‌شود
     val isVip: StateFlow<Boolean> =
-        preferences.isVip.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
+        preferences.isVip
+            .map { stored -> stored || red.line.tamirkar.AppConfig.TESTING_MODE_UNLOCK_ALL }
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), red.line.tamirkar.AppConfig.TESTING_MODE_UNLOCK_ALL)
 
     fun setVipStatus(value: Boolean) {
         viewModelScope.launch { preferences.setIsVip(value) }

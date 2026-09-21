@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package red.line.tamirkar.ui.screens
 
 import androidx.compose.foundation.layout.*
@@ -10,6 +8,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.EventAvailable
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -63,7 +62,13 @@ fun RemindersScreen(
                 }
             }
             if (reminders.isEmpty()) {
-                item { Text("یادآوری فعالی وجود ندارد", style = MaterialTheme.typography.bodyMedium) }
+                item {
+                    red.line.tamirkar.ui.components.EmptyState(
+                        icon = Icons.Filled.EventAvailable,
+                        title = "یادآوری فعالی نیست",
+                        description = "برای موعد تحویل دستگاه‌ها یادآوری بسازید تا هیچ‌وقت یادتان نرود"
+                    )
+                }
             }
         }
     }

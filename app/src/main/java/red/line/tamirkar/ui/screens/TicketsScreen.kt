@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package red.line.tamirkar.ui.screens
 
 import android.net.Uri
@@ -14,6 +12,7 @@ import androidx.compose.material.icons.filled.AddAPhoto
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Draw
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Assignment
 import androidx.compose.material.icons.filled.PictureAsPdf
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Sms
@@ -95,7 +94,13 @@ fun TicketsScreen(
             }
 
             if (filtered.isEmpty()) {
-                item { Text("فیشی یافت نشد", style = MaterialTheme.typography.bodyMedium) }
+                item {
+                    red.line.tamirkar.ui.components.EmptyState(
+                        icon = Icons.Filled.Assignment,
+                        title = "فیشی یافت نشد",
+                        description = "برای شروع، یک دستگاه جدید پذیرش کنید"
+                    )
+                }
             }
         }
     }
