@@ -1,15 +1,14 @@
 package red.line.tamirkar.ui.screens
 
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -51,7 +50,7 @@ fun DashboardScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScrollWorkaround()
+            .verticalScroll(rememberScrollState())
     ) {
         GradientHero(
             title = "سلام 👋",
@@ -187,11 +186,4 @@ private fun QuickActionButton(action: QuickAction, modifier: Modifier = Modifier
             )
         }
     }
-}
-
-// اسکرول ساده برای وقتی محتوا از صفحه بلندتر است (در صفحات کوچک)
-@Composable
-private fun Modifier.verticalScrollWorkaround(): Modifier {
-    val scrollState = androidx.compose.foundation.rememberScrollState()
-    return this.then(androidx.compose.foundation.verticalScroll(scrollState))
 }
