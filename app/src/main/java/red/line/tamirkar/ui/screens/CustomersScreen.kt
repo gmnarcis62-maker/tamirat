@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package red.line.tamirkar.ui.screens
 
 import androidx.compose.foundation.layout.*
@@ -8,7 +10,6 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.People
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
@@ -72,15 +73,6 @@ fun CustomersScreen(
                 Spacer(Modifier.height(8.dp))
 
                 LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    if (customers.isEmpty()) {
-                        item {
-                            red.line.tamirkar.ui.components.EmptyState(
-                                icon = Icons.Filled.People,
-                                title = "هنوز مشتری‌ای ثبت نشده",
-                                description = "با دکمه‌ی + یک مشتری جدید اضافه کنید"
-                            )
-                        }
-                    }
                     items(customers) { customer ->
                         ElevatedCard(
                             modifier = Modifier.fillMaxWidth(),

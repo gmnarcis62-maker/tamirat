@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package red.line.tamirkar.ui.screens
 
 import androidx.compose.foundation.layout.*
@@ -7,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -76,7 +79,7 @@ fun TechniciansScreen(
                             if (!tech.active) Text("غیرفعال", color = MaterialTheme.colorScheme.error)
                         }
                         if (!tech.isOwner) {
-                            IconButton(onClick = { editing = tech }) { Icon(androidx.compose.material.icons.filled.Edit, contentDescription = "ویرایش") }
+                            IconButton(onClick = { editing = tech }) { Icon(Icons.Filled.Edit, contentDescription = "ویرایش") }
                             IconButton(onClick = { onDelete(tech) }) { Icon(Icons.Filled.Delete, contentDescription = "حذف") }
                         }
                     }

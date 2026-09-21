@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package red.line.tamirkar.ui.screens
 
 import androidx.compose.foundation.layout.*
@@ -7,7 +9,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDownward
 import androidx.compose.material.icons.filled.ArrowUpward
-import androidx.compose.material.icons.filled.ReceiptLong
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -99,11 +100,7 @@ fun AccountingScreen(
 
             if (transactions.isEmpty()) {
                 item {
-                    red.line.tamirkar.ui.components.EmptyState(
-                        icon = Icons.Filled.ReceiptLong,
-                        title = "هنوز تراکنشی ثبت نشده",
-                        description = "با دکمه‌ی + اولین درآمد یا هزینه را ثبت کنید"
-                    )
+                    Text("هنوز تراکنشی ثبت نشده است", style = MaterialTheme.typography.bodyMedium)
                 }
             }
         }
